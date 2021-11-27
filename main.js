@@ -103,7 +103,7 @@ var player = document.getElementById("player");
 var playerPos=new Vector2(300,560);
 var gravity=false;
 let g=2;
-let speed=0.008;
+let speed=5;
 let weight=2;
 
 //if player.png is loaded run game
@@ -123,12 +123,11 @@ async function game(){
 				playerPos.y-=0.1;
 			}
 			else{
-			playerPos.y=playerPos.y+0.1*gravity*weight;
+			playerPos.y=playerPos.y+0.1*g*weight;
 			}
 		}
 
-    	//player x movement
-    	playerx();
+    	movement()
 		ctx.clearRect(0, 0, c.width, c.height);
     	ctx.drawImage(player,playerPos.x,playerPos.y);
     	console.log(playerPos.y, playerPos.x)
@@ -136,20 +135,36 @@ async function game(){
     }
 }
 
-function playerx(){
-    document.addEventListener('keydown', function(event) {
-        if (event.keyCode == 39) {
-            playerPos.x+=1*speed
-    
-        }
-        else if (event.keyCode == 37) {
-			if(playerPos.x>9){
-				playerPos.x-=1*speed
+function movement(){
+	window.addEventListener("keydown", function (event) {
+		if (event.defaultPrevented) {
+		  return; // Do nothing if the event was already processed
+		}
+	  
+		switch (event.key) {
+		  case "Down": // IE/Edge specific value
+		  case "ArrowDown":
+			if(playerPos.y>1100){
+				playerPos-=0.1;
+			}else{
+				playerPos.y+=1*speed;
 			}
-			else{
-				playerPos.x+=1
-			}
-        }
-    }, true);
+			break;
+		  case "Up": // IE/Edge specific value
+		  case "ArrowUp":
+			playerPos.y-=1*speed;
+			break;
+		  case "Left": // IE/Edge specific value
+		  case "ArrowLeft":
+			playerPos.x-=1*speed;
+			break;
+		  case "Right": // IE/Edge specific value
+		  case "ArrowRight":
+			playerPos.x+=1*speed;
+			break;
+		}
+	  
+		// Cancel the default action to avoid it being handled twice
+		event.preventDefault();
+	  }, true);
 }
-

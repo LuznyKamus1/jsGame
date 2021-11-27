@@ -100,7 +100,7 @@ var ctx = c.getContext("2d");
 var player = document.getElementById("player");
 var playerPos=new Vector2(300,560);
 let gravity=1;
-let speed=0.1;
+let speed=0.008;
 
 //if player.png is loaded run game
 player.onload = game()
@@ -113,20 +113,20 @@ async function game(){
 
     console.log("what da dog doin")
     while (true){
-    //gravity
-    if(playerPos.y>580){
-        playerPos.y-=1;
-    }
-    else{
+    	//gravity
+    	if(playerPos.y>580){
+    	    playerPos.y-=1;
+    	}
+    	else{
         playerPos.y=playerPos.y+1*gravity;
-    }
+    	}
 
-    //player x movement
-    playerx();
-
-    ctx.drawImage(player,playerPos.x,playerPos.y);
-    console.log(playerPos.y, playerPos.x)
-    await new Promise(r => setTimeout(r, 200));
+    	//player x movement
+    	playerx();
+		ctx.clearRect(0, 0, c.width, c.height);
+    	ctx.drawImage(player,playerPos.x,playerPos.y);
+    	console.log(playerPos.y, playerPos.x)
+    	await new Promise(r => setTimeout(r, 20));
     }
 }
 

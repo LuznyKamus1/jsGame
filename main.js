@@ -1,3 +1,4 @@
+//vector2 code from https://gist.github.com/Dalimil/3daf2a0c531d7d030deb37a7bfeff454
 function Vector2(x, y) {
 	this.x = (x === undefined) ? 0 : x;
 	this.y = (y === undefined) ? 0 : y;
@@ -92,6 +93,7 @@ Vector2.prototype = {
 		return ("[" + vector.x + "; " + vector.y + "]");
 	}
 };
+//end of vector2
 
 //vars
 var c = document.getElementById("game");
@@ -99,8 +101,10 @@ var ctx = c.getContext("2d");
 
 var player = document.getElementById("player");
 var playerPos=new Vector2(300,560);
-let gravity=1;
+var gravity=false;
+let g=2;
 let speed=0.008;
+let weight=2;
 
 //if player.png is loaded run game
 player.onload = game()
@@ -114,19 +118,21 @@ async function game(){
     console.log("what da dog doin")
     while (true){
     	//gravity
-    	if(playerPos.y>580){
-    	    playerPos.y-=1;
-    	}
-    	else{
-        playerPos.y=playerPos.y+1*gravity;
-    	}
+		if(gravity==true){
+			if(playerPos.y>1100){
+				playerPos.y-=0.1;
+			}
+			else{
+			playerPos.y=playerPos.y+0.1*gravity*weight;
+			}
+		}
 
     	//player x movement
     	playerx();
 		ctx.clearRect(0, 0, c.width, c.height);
     	ctx.drawImage(player,playerPos.x,playerPos.y);
     	console.log(playerPos.y, playerPos.x)
-    	await new Promise(r => setTimeout(r, 20));
+    	await new Promise(r => setTimeout(r, 2));
     }
 }
 
@@ -137,7 +143,12 @@ function playerx(){
     
         }
         else if (event.keyCode == 37) {
-            playerPos.x-=1*speed
+			if(playerPos.x>9){
+				playerPos.x-=1*speed
+			}
+			else{
+				playerPos.x+=1
+			}
         }
     }, true);
 }
